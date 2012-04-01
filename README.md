@@ -19,14 +19,14 @@ you should set Cache-Control headers appropriate for your needs.
 
 Example usage:
 
-    define('LIB\_DIR', getcwd() . 'lib/');
+    define('LIB_DIR', getcwd() . 'lib/');
 
-    include("php-less.php");
+    include(LIB_DIR . 'third-party/php-less.php');
 
     $c = new PhpLess();
-    $c->add("main.less")
-     ->addDir("/less/")
-     ->cacheDir("/tmp/css-cache/")
+    $c->add('main.less')
+     ->addDir('/less/')
+     ->cacheDir('/tmp/css-cache/')
      ->write();
 
 License

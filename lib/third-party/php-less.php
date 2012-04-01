@@ -32,12 +32,12 @@ define('LESSC_PATH', LIB_DIR . 'third-party/less/bin/lessc');
  *
  * define('LIB_DIR', getcwd() . 'lib/');
  *
- * include("php-less.php");
+ * include(LIB_DIR . 'third-party/php-less.php');
  *
  * $c = new PhpLess();
- * $c->add("main.less")
- *   ->addDir("/less/")
- *   ->cacheDir("/tmp/css-cache/")
+ * $c->add('main.less')
+ *   ->addDir('/less/')
+ *   ->cacheDir('/tmp/css-cache/')
  *   ->write();
  * 
  */
