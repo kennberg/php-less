@@ -19,9 +19,9 @@ you should set Cache-Control headers appropriate for your needs.
 
 Example usage:
 
-    define('LIB_DIR', getcwd() . 'lib/');
+    define('LIB_DIR', getcwd());
 
-    include(LIB_DIR . 'third-party/php-less.php');
+    include(LIB_DIR . 'php-less.php');
 
     $c = new PhpLess();
     $c->add('main.less')
