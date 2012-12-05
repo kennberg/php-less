@@ -9,13 +9,15 @@ This is a wrapper around the less compiler to help compile the resources and cac
 How to use
 ======================
 
-PHP wrapper for the lessc compiler.
+PHP wrapper for the lessc compiler found at https://github.com/leafo/lessphp
 
 Handles caching and recompilation of sources.  A recompilation will occur
 whenever a source file, or the script calling the compiler, changes.
 
 The class will handle the Last-Modified and 304 redirects for you, but if
 you should set Cache-Control headers appropriate for your needs.
+
+First, clone this repository and execute "git submodule init".
 
 Example usage:
 

@@ -1,0 +1,3 @@
+[submodule "third-party/lessphp"]
+	path = third-party/lessphp
+	url = https://github.com/leafo/lessphp.git

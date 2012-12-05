@@ -16,7 +16,8 @@
  * limitations under the License.
  */
 
-define('LESSC_PATH', LIB_DIR . 'third-party/less/bin/lessc');
+define('LESSC_PATH', LIB_DIR . 'third-party/lessphp/lessc.inc.php');
+require_once(LESSC_PATH);
 
 
 /**
@@ -30,9 +31,9 @@ define('LESSC_PATH', LIB_DIR . 'third-party/less/bin/lessc');
  *
  * Example usage:
  *
- * define('LIB_DIR', getcwd());
+ * define('LIB_DIR', getcwd() . 'lib/');
  *
- * include(LIB_DIR . 'php-less.php');
+ * include(LIB_DIR . 'third-party/php-less.php');
  *
  * $c = new PhpLess();
  * $c->add('main.less')
@@ -115,14 +116,16 @@ class PhpLess {
     if ($this->_cache_dir == "") {
       echo $this->_compile();
 
-    } else {
+    }
+    else {
       $cache_file = $this->_getCacheFileName();
       if ($this->_isRecompileNeeded($cache_file)) {
         $result = $this->_compile();
         if ($result !== false)
           file_put_contents($cache_file, $result);
         echo $result;
-      } else {
+      }
+      else {
         // No recompile needed, but see if we can send a 304 to the browser.
         $cache_mtime = filemtime($cache_file);
         $etag = md5_file($cache_file);
@@ -131,7 +134,8 @@ class PhpLess {
         if (@strtotime(@$_SERVER['HTTP_IF_MODIFIED_SINCE']) == $cache_mtime || 
             @trim(@$_SERVER['HTTP_IF_NONE_MATCH']) == $etag) { 
           header("HTTP/1.1 304 Not Modified"); 
-        } else {
+            }
+        else {
           // Read the cache file and send it to the client.
           echo file_get_contents($cache_file);
         }
@@ -181,17 +185,17 @@ class PhpLess {
   function _compile() {
     $result = '';
 
-    $input_path = $this->_cache_dir . 'tmp.less';
-    unlink($input_path);
+    $buffer = '';
     foreach ($this->_srcs as $src) {
-      file_put_contents($input_path, file_get_contents($src) . "\n\n", FILE_APPEND | LOCK_EX);
+      $buffer .= file_get_contents($src) . "\n\n";
     }
 
-    $cmd = LESSC_PATH . ' --compress --no-color ' . $input_path;
-    $this->_exec($cmd, $result, $stderr);
-    if (strlen($stderr)) {
-      error_log($cmd . "\n");
-      error_log($stderr);
+    try {
+      $lessc = new lessc;
+      $result = $lessc->compile($buffer);
+    }
+    catch (Exception $e) {
+      error_log('Exception: ' . $e->getMessage());
       return false;
     }
 
