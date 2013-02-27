@@ -46,7 +46,8 @@ class PhpLess {
 
   var $_srcs = array();
   var $_debug = true;
-  var $_cache_dir = "";
+  var $_cache_dir = '';
+  var $_import_dirs = array();
 
   function PhpLess() { }
 
@@ -83,6 +84,14 @@ class PhpLess {
 
       $this->add($fileinfo->getPathname());
     }
+    return $this;
+  }
+
+  /**
+   * Sets the directories to be searched for import.
+   */
+  function importDirs($dirs) {
+    $this->_import_dirs = $dirs;
     return $this;
   }
 
@@ -192,6 +201,7 @@ class PhpLess {
 
     try {
       $lessc = new lessc;
+      $lessc->setImportDir($this->_import_dirs);
       $result = $lessc->compile($buffer);
     }
     catch (Exception $e) {
