@@ -44,12 +44,21 @@ require_once(LESSC_PATH);
  */
 class PhpLess {
 
+  var $_vars = array();
   var $_srcs = array();
   var $_debug = true;
   var $_cache_dir = '';
   var $_import_dirs = array();
 
   function PhpLess() { }
+
+  /**
+   * Set initial variables.
+   */
+  function set_variables($vars) {
+    $this->_vars = $vars;
+    return $this;
+  }
 
   /**
    * Adds a source file to the list of files to compile.  Files will be
@@ -201,6 +210,7 @@ class PhpLess {
 
     try {
       $lessc = new lessc;
+      $lessc->setVariables($this->_vars);
       $lessc->setImportDir($this->_import_dirs);
       $result = $lessc->compile($buffer);
     }
@@ -217,7 +227,10 @@ class PhpLess {
   }
 
   function _getHash() {
-    return md5(implode(",", $this->_srcs) . "-" .
-        $this->_debug);
+    return md5(
+      serialize($this->_vars) . '-' .
+      serialize($this->_srcs) . '-' .
+      $this->_debug
+    );
   }
 }
